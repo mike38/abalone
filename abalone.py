@@ -76,7 +76,7 @@ def autre(player):
         return 1
     
 def deplacement(first):
-    global player
+    global player,gain
     print('deplacement')
     ligne,colonne=first
     MS=np.array(S2)
@@ -143,6 +143,114 @@ def deplacement(first):
                     
     elif M[ligne,colonne]==autre(player):
         print ('sumito')
+        if (ligne==MS[:,0]).all():
+            nb=MS[1,1]-MS[0,1]+1
+            nb2=0
+            sortie=False
+            for k in range(nb):
+                if colonne-MS[1,1]==1:
+                    sig=1
+                elif colonne-MS[0,1]==-1:
+                    sig=-1
+                else:
+                    return
+                if M[ligne,colonne+sig*k]==autre(player):
+                    nb2+=1
+                elif M[ligne,colonne+sig*k]==3:
+                    sortie=True
+                    break
+                elif M[ligne,colonne+sig*k]==0:
+                    break
+                else:
+                    print('sumito impossible')
+                    affiche(M)
+                    return
+            if nb>nb2:
+                if sig==1:
+                    M[MS[0,0],MS[0,1]]=0
+                else:
+                    M[MS[1,0],MS[1,1]]=0
+                M[ligne,colonne]=player
+                if M[ligne,colonne+sig*nb2]==3:
+                    gain[player]+=1
+                else:
+                    M[ligne,colonne+sig*nb2]=autre(player)
+            else:
+                print('sumito impossible')
+                affiche(M)
+                return
+        elif (colonne==MS[:,1]).all():
+            nb=MS[1,0]-MS[0,0]+1
+            nb2=0
+            sortie=False
+            for k in range(nb):
+                if ligne-MS[1,0]==1:
+                    sig=1
+                elif ligne-MS[0,0]==-1:
+                    sig=-1
+                else:
+                    return
+                if M[ligne+sig*k,colonne]==autre(player):
+                    nb2+=1
+                elif M[ligne+sig*k,colonne]==3:
+                    sortie=True
+                    break
+                elif M[ligne+sig*k,colonne]==0:
+                    break
+                else:
+                    print('sumito impossible')
+                    affiche(M)
+                    return
+            if nb>nb2:
+                if sig==1:
+                    M[MS[0,0],MS[0,1]]=0
+                else:
+                    M[MS[1,0],MS[1,1]]=0
+                M[ligne,colonne]=player
+                if M[ligne+sig*nb2,colonne]==3:
+                    gain[player]+=1
+                else:
+                    M[ligne+sig*nb2,colonne]=autre(player)
+            else:
+                print('sumito impossible')
+                affiche(M)
+                return                
+        elif MS[1,1]-MS[0,1]==MS[1,0]-MS[0,0]:
+            nb=MS[1,0]-MS[0,0]+1
+            nb2=0
+            sortie=False
+            for k in range(nb):
+                if ligne-MS[1,0]==1:
+                    sig=1
+                elif ligne-MS[0,0]==-1:
+                    sig=-1
+                else:
+                    return
+                if M[ligne+sig*k,colonne+sig*k]==autre(player):
+                    nb2+=1
+                elif M[ligne+sig*k,colonne+sig*k]==3:
+                    sortie=True
+                    break
+                elif M[ligne+sig*k,colonne+sig*k]==0:
+                    break
+                else:
+                    print('sumito impossible')
+                    affiche(M)
+                    return
+            if nb>nb2:
+                if sig==1:
+                    M[MS[0,0],MS[0,1]]=0
+                else:
+                    M[MS[1,0],MS[1,1]]=0
+                M[ligne,colonne]=player
+                if M[ligne+sig*nb2,colonne+sig*nb2]==3:
+                    gain[player]+=1
+                else:
+                    M[ligne+sig*nb2,colonne+sig*nb2]=autre(player)
+            else:
+                print('sumito impossible')
+                affiche(M)
+                return                
     else:
         print('impossible')
     affiche(M)
@@ -174,6 +282,7 @@ M=create_jeu()
 S2=[]
 first=[]
 player=1
+gain=[0,0,0]
 select=True
 affiche(M)
 ax.set_aspect('equal')
