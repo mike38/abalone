@@ -107,7 +107,40 @@ def deplacement(first):
             elif ligne==MS[0,0]-1:
                 M[MS[1,0],MS[1,1]]=0
                 M[ligne,colonne]=player
-        
+        elif MS[0,0]==MS[1,0]:
+            for dep in [(1,1,1),(1,0,0),(-1,0,1),(-1,-1,0)]:
+                if ligne==MS[dep[2],0]+dep[0] and colonne==MS[dep[2],1]+dep[1]:
+                    if (M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1]==0).all():
+                        M[MS[0,0]:MS[1,0]+1,MS[0,1]:MS[1,1]+1]=0
+                        M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1]=player
+                        break
+        elif MS[0,1]==MS[1,1]:
+            print('cote')
+            for dep in [(0,1,0),(0,-1,1),(1,1,1),(-1,-1,0)]:
+                print(dep,MS)
+                if ligne==MS[dep[2],0]+dep[0] and colonne==MS[dep[2],1]+dep[1]:
+                    print('ok')
+                    print(M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1])
+                    if (M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1]==0).all():
+                        M[MS[0,0]:MS[1,0]+1,MS[0,1]:MS[1,1]+1]=0
+                        M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1]=player 
+                        break        
+        elif MS[1,1]-MS[0,1]==MS[1,0]-MS[0,0]:
+            print('diag')
+            for dep in [(0,1,1),(0,-1,0),(1,0,1),(-1,0,0)]:
+                print(dep,MS)
+                if ligne==MS[dep[2],0]+dep[0] and colonne==MS[dep[2],1]+dep[1]:
+                    print('ok')
+                    print(M[MS[0,0]+dep[0]:MS[1,0]+dep[0]+1,MS[0,1]+dep[1]:MS[1,1]+dep[1]+1])
+                    ok=True
+                    for k in range(MS[1,0]-MS[0,0]+1):
+                        if M[MS[0,0]+dep[0]+k,MS[0,1]+dep[1]+k]!=0:
+                            ok=False
+                    if ok:
+                        for k in range(MS[1,0]-MS[0,0]+1):
+                            M[MS[0,0]+k,MS[0,1]+k]=0
+                            M[MS[0,0]+dep[0]+k,MS[0,1]+dep[1]+k]=player 
+                    
     elif M[ligne,colonne]==autre(player):
         print ('sumito')
     else:
